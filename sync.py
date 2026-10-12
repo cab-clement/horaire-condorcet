@@ -392,19 +392,13 @@ async def ouvrir(ctx, nom):
 
 async def lire_vue(ctx, groupe, today):
     """Lit SEMAINES semaines pour une vue : groupe=None (horaire commun + tout), ou 'Groupe A'/'Groupe B'."""
-    global GROUPE
     nom = (groupe or "commun").replace(" ", "_")
     page = await ouvrir(ctx, nom)
     box = await choisir_promo(page)
     if not box:
         raise RuntimeError(f"[{nom}] promotion introuvable")
-    if groupe:
-        ancien, GROUPE = GROUPE, groupe
-        try:
-            if not await choisir_groupe(page, box):
-                raise RuntimeError(f"[{nom}] {groupe} introuvable dans le menu")
-        finally:
-            GROUPE = ancien
+    if groupe and not await choisir_groupe(page, box, groupe):
+        raise RuntimeError(f"[{nom}] {groupe} introuvable dans le menu")
     res, vu = {}, None
     for n in range(SEMAINES):
         await dump(page, f"04_{nom}_semaine_{n}")
