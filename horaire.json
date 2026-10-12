@@ -2,6 +2,126 @@
  "weeks": {
   "2026-10-12": [
    {
+    "date": "2026-10-12",
+    "start": "09:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mathématiques appliquées B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-12",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mathématiques appliquées B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-12",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M ROLAND Jean-Luc",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Technologie avionique",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-12",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "Mme CANON Marie",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Remédiation Remédiation de mathématiques",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-13",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M PAREDES OREJUDO Manuel",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Connaissance des matériaux aéronautiques",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-13",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M PAREDES OREJUDO Manuel",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Connaissance des matériaux aéronautiques",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-13",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M FOUDA BANA Patrick",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mécanique et mécanique des fluides B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-13",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M FOUDA BANA Patrick",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mécanique et mécanique des fluides B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-14",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M CAMPIONE Adrien",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Technologie mécanique et métrologie",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-14",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M CAMPIONE Adrien",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Technologie mécanique et métrologie",
+    "groupe": ""
+   },
+   {
     "date": "2026-10-14",
     "start": "13:30",
     "end": "15:30",
@@ -10,7 +130,8 @@
     "room": "Auditoire B",
     "site": "WAN",
     "kind": "labo",
-    "note": "Technologie avionique Labos"
+    "note": "Technologie avionique Labos",
+    "groupe": "Groupe B"
    },
    {
     "date": "2026-10-14",
@@ -21,7 +142,32 @@
     "room": "Salle 43",
     "site": "WAN",
     "kind": "cours",
-    "note": "Anglais aéronautique B1.1"
+    "note": "Anglais aéronautique B1.1",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-15",
+    "start": "09:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mathématiques appliquées B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-15",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mathématiques appliquées B1.1",
+    "groupe": ""
    },
    {
     "date": "2026-10-15",
@@ -32,7 +178,8 @@
     "room": "Salle 51",
     "site": "WAN",
     "kind": "labo",
-    "note": "Électricité B1.1 Labos"
+    "note": "Électricité B1.1 Labos",
+    "groupe": "Groupe B"
    },
    {
     "date": "2026-10-15",
@@ -43,12 +190,49 @@
     "room": "Salle 51",
     "site": "WAN",
     "kind": "labo",
-    "note": "Électricité B1.1 Labos"
+    "note": "Électricité B1.1 Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-16",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DEHON Roland",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Sciences des matériaux et applications B1.1 p",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-16",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DEHON Roland",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Sciences des matériaux et applications B1.1 p",
+    "groupe": ""
    }
   ],
   "2026-10-19": [
    {
     "date": "2026-10-19",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M NDUNGIDI KIAZAYILA Papy",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Électricité B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-19",
     "start": "13:30",
     "end": "15:30",
     "course": "Ouverture des détails du cours",
@@ -56,7 +240,8 @@
     "room": "Salle 43",
     "site": "WAN",
     "kind": "cours",
-    "note": "Dessin et croquis mécaniques"
+    "note": "Dessin et croquis mécaniques",
+    "groupe": "Groupe B"
    },
    {
     "date": "2026-10-19",
@@ -67,7 +252,68 @@
     "room": "Salle 43",
     "site": "WAN",
     "kind": "cours",
-    "note": "Dessin et croquis mécaniques"
+    "note": "Dessin et croquis mécaniques",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-20",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M NDUNGIDI KIAZAYILA Papy",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Électricité B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-20",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M PAREDES OREJUDO Manuel",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Connaissance des matériaux aéronautiques",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-20",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DEHON Roland",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Sciences des matériaux et applications B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-20",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DEHON Roland",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Sciences des matériaux et applications B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-21",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M CAMPIONE Adrien",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Technologie mécanique et métrologie",
+    "groupe": ""
    },
    {
     "date": "2026-10-21",
@@ -78,7 +324,8 @@
     "room": "Auditoire B",
     "site": "WAN",
     "kind": "cours",
-    "note": "Anglais aéronautique B1.1"
+    "note": "Anglais aéronautique B1.1",
+    "groupe": "Groupe B"
    },
    {
     "date": "2026-10-21",
@@ -89,7 +336,8 @@
     "room": "Salle 51",
     "site": "WAN",
     "kind": "labo",
-    "note": "Technologie avionique Labos"
+    "note": "Technologie avionique Labos",
+    "groupe": "Groupe B"
    },
    {
     "date": "2026-10-22",
@@ -100,7 +348,8 @@
     "room": "Salle 43",
     "site": "WAN",
     "kind": "cours",
-    "note": "Dessin et croquis mécaniques"
+    "note": "Dessin et croquis mécaniques",
+    "groupe": "Groupe B"
    },
    {
     "date": "2026-10-22",
@@ -111,10 +360,59 @@
     "room": "Salle 43",
     "site": "WAN",
     "kind": "cours",
-    "note": "Dessin et croquis mécaniques"
+    "note": "Dessin et croquis mécaniques",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-23",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Mathématiques appliquées B1.1",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-23",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M ROLAND Jean-Luc",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Technologie avionique",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-23",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M KINARD Alain",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Introduction aux matériaux composites",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-23",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M KINARD Alain",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Introduction aux matériaux composites",
+    "groupe": ""
    }
   ],
   "2026-10-26": []
  },
- "updated": "2026-10-12T13:22+02:00"
+ "updated": "2026-10-12T13:37+02:00"
 }
