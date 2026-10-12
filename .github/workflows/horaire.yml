@@ -1,0 +1,51 @@
+name: Horaire
+
+on:
+  workflow_dispatch:        # bouton « Run workflow »
+  schedule:
+    - cron: "17 5,16 * * *"   # 2 fois par jour (≈ 7h17 et 18h17 en Belgique)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: horaire
+  cancel-in-progress: false
+
+jobs:
+  synchro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer Playwright
+        run: |
+          pip install playwright==1.47.0
+          python -m playwright install --with-deps chromium
+
+      - name: Lire l'horaire
+        env:
+          PROMO: "B1-Bac en aérotechnique (Charleroi)"
+          GROUPE: "Groupe B"
+          SEMAINES: "3"
+        run: python sync.py
+
+      - name: Enregistrer le calendrier
+        run: |
+          git config user.name "robot-horaire"
+          git config user.email "robot-horaire@users.noreply.github.com"
+          git add horaire.ics horaire.json
+          git diff --cached --quiet || (git commit -m "Horaire mis à jour" && git push)
+
+      - name: Captures pour le dépannage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug
+          path: debug/
+          retention-days: 7
