@@ -58,19 +58,59 @@ async def dump(page, name):
     except Exception as e:
         L(f"capture {name}: {e!r}")
 
+VOILE = ".BloquerInterface:visible, [class*='Voile']:visible"
+
+async def degager(page, etape):
+    # Pronote pose un voile gris pendant le chargement ou quand une fenêtre de message est ouverte
+    for essai in range(6):
+        if not await page.locator(VOILE).count():
+            return True
+        await page.wait_for_timeout(2500)
+        if not await page.locator(VOILE).count():
+            return True
+        if essai == 0:
+            await dump(page, f"voile_{etape}")
+        for txt in ["Fermer", "OK", "J'ai compris", "Accepter", "Valider", "Continuer", "Ignorer"]:
+            b = page.get_by_role("button", name=re.compile("^" + re.escape(txt), re.I))
+            for j in range(await b.count()):
+                try:
+                    if await b.nth(j).is_visible():
+                        await b.nth(j).click(timeout=2000)
+                        L(f"fenêtre fermée avec « {txt} »")
+                except Exception:
+                    pass
+        croix = page.locator("[title*='ermer' i]:visible, [aria-label*='ermer' i]:visible")
+        for j in range(await croix.count()):
+            try:
+                await croix.nth(j).click(timeout=2000)
+                L("fenêtre fermée avec la croix")
+            except Exception:
+                pass
+        await page.keyboard.press("Escape")
+    L(f"voile toujours présent ({etape})")
+    return False
+
 async def choisir_promo(page):
+    await degager(page, "accueil")
     champs = page.locator("input:visible")
     for i in range(await champs.count()):
         c = champs.nth(i)
         try:
-            await c.click(timeout=5000)
+            await c.focus()
             await c.fill("")
             await c.type("aérotechnique", delay=60)
-            await page.wait_for_timeout(2500)
+            await page.wait_for_timeout(3000)
             sugg = page.get_by_text(re.compile(re.escape(PROMO).replace("é", "."))).last
             if await sugg.count() and await sugg.is_visible():
-                await sugg.click()
+                await degager(page, f"suggestions_{i}")
+                try:
+                    await sugg.click(timeout=5000)
+                except Exception:
+                    await c.focus()
+                    await page.keyboard.press("ArrowDown")
+                    await page.keyboard.press("Enter")
                 await page.wait_for_timeout(5000)
+                await degager(page, "promo")
                 L(f"promotion choisie (champ {i})")
                 return await c.bounding_box()
         except Exception as e:
@@ -87,6 +127,7 @@ async def choisir_groupe(page, promo_box):
         if b and abs(b["y"] + b["height"] / 2 - cy) < 12 and b["x"] > promo_box["x"] + promo_box["width"] \
                 and 150 < b["width"] < 900 and b["height"] < 60:
             cands.append((b["x"], -b["width"], i))
+    await degager(page, "groupe")
     for _, _, i in sorted(cands)[:6]:
         try:
             await els.nth(i).click(timeout=4000)
@@ -95,6 +136,7 @@ async def choisir_groupe(page, promo_box):
             if await opt.count() and await opt.is_visible():
                 await opt.click()
                 await page.wait_for_timeout(5000)
+                await degager(page, "apres_groupe")
                 L(f"{GROUPE} choisi")
                 return True
             await page.keyboard.press("Escape")
@@ -205,8 +247,10 @@ async def semaine_suivante(page):
         return False
     nxt = row[i + 1]
     sx, sy = await page.evaluate("[scrollX, scrollY]")
+    await degager(page, "reglette")
     await page.mouse.click(nxt["x"] + nxt["w"] / 2 - sx, nxt["y"] + nxt["h"] / 2 - sy)
     await page.wait_for_timeout(5000)
+    await degager(page, "semaine")
     return True
 
 # ---------------------------------------------------------------- calendrier
