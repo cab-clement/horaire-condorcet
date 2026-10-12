@@ -9,7 +9,8 @@ from playwright.async_api import async_playwright
 
 URL = os.environ.get("HORAIRE_URL", "https://horaires2026.condorcet.be/invite")
 PROMO = os.environ.get("PROMO", "B1-Bac en aérotechnique (Charleroi)")
-GROUPE = os.environ.get("GROUPE", "Groupe B")
+GROUPE = os.environ.get("GROUPE", "Groupe B")          # ton groupe
+AUTRES = [g.strip() for g in os.environ.get("AUTRES_GROUPES", "Groupe A").split(",") if g.strip()]
 SEMAINES = int(os.environ.get("SEMAINES", "3"))   # semaine actuelle + suivantes
 TZ = ZoneInfo("Europe/Brussels")
 OUT = "debug"
@@ -163,8 +164,8 @@ async def choisir_promo(page):
             L(f"champ {i}: {e!r}")
     return None
 
-async def cliquer_option_groupe(page):
-    motif = re.compile(r"\b" + re.escape(GROUPE) + r"\b", re.I)
+async def cliquer_option_groupe(page, nom):
+    motif = re.compile(r"\b" + re.escape(nom) + r"\b", re.I)
     for loc in [page.get_by_role("option", name=motif), page.get_by_role("menuitem", name=motif),
                 page.get_by_role("treeitem", name=motif), page.get_by_text(motif)]:
         for j in range(await loc.count() - 1, -1, -1):
@@ -181,7 +182,7 @@ async def cliquer_option_groupe(page):
                 L(f"clic option groupe: {e!r}")
     return False
 
-async def choisir_groupe(page, promo_box):
+async def choisir_groupe(page, promo_box, nom):
     await page.wait_for_timeout(3000)
     await degager(page, "groupe")
     # 1) le menu porte souvent une étiquette « groupe » ; 2) sinon un menu déroulant ; 3) sinon ce qui est à droite de la promo
@@ -220,19 +221,19 @@ async def choisir_groupe(page, promo_box):
                 await page.keyboard.press("Enter")
             await page.wait_for_timeout(2500)
             await dump(page, f"04_menu_{k}")
-            ok = await cliquer_option_groupe(page)
+            ok = await cliquer_option_groupe(page, nom)
             if not ok:
                 for touche in ["ArrowDown", "Alt+ArrowDown", "Space"]:
                     await el.focus()
                     await page.keyboard.press(touche)
                     await page.wait_for_timeout(2000)
-                    ok = await cliquer_option_groupe(page)
+                    ok = await cliquer_option_groupe(page, nom)
                     if ok:
                         break
             if ok:
                 await page.wait_for_timeout(5000)
                 await degager(page, "apres_groupe")
-                L(f"{GROUPE} choisi (menu {k})")
+                L(f"{nom} choisi (menu {k})")
                 return True
             await page.keyboard.press("Escape")
             await page.wait_for_timeout(800)
@@ -302,7 +303,8 @@ def lire_grille(g, today):
     for b in kept:
         cx = b["x"] + b["w"] / 2
         date = min(centers, key=lambda c: abs(c[0] - cx))[1]
-        lignes = [l.strip() for l in (b["t"] or "").split("\n") if l.strip() and not l.strip().startswith("<")]
+        lignes = [l.strip() for l in (b["t"] or "").split("\n")
+                  if l.strip() and not l.strip().startswith("<") and not re.fullmatch(r"\d{1,2}", l.strip())]
         prof = next((l for l in lignes if re.match(r"^(M|Mme|Mlle)\s", l)), "")
         local = next((l for l in lignes if re.match(r"^[A-Z]{2,5}\s+-\s+", l)), "")
         reste = [l for l in lignes if l not in (prof, local)]
@@ -371,53 +373,109 @@ def ics(events):
     return "\r\n".join(out) + "\r\n"
 
 # ---------------------------------------------------------------- principal
+AUTRE = "Groupe A" if GROUPE.strip().upper().endswith("B") else "Groupe B"
+
+async def ouvrir(ctx, nom):
+    page = await ctx.new_page()
+    try:
+        rep = await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+        L(f"[{nom}] page chargée : statut {rep.status if rep else '?'}")
+    except Exception as e:
+        L(f"[{nom}] chargement de la page : {e!r}")
+    try:
+        await page.wait_for_selector("input:visible", timeout=60000)
+    except Exception:
+        L(f"[{nom}] aucun champ visible après 60 s")
+    await page.wait_for_timeout(4000)
+    await dump(page, f"01_accueil_{nom}")
+    return page
+
+async def lire_vue(ctx, groupe, today):
+    """Lit SEMAINES semaines pour une vue : groupe=None (horaire commun + tout), ou 'Groupe A'/'Groupe B'."""
+    global GROUPE
+    nom = (groupe or "commun").replace(" ", "_")
+    page = await ouvrir(ctx, nom)
+    box = await choisir_promo(page)
+    if not box:
+        raise RuntimeError(f"[{nom}] promotion introuvable")
+    if groupe:
+        ancien, GROUPE = GROUPE, groupe
+        try:
+            if not await choisir_groupe(page, box):
+                raise RuntimeError(f"[{nom}] {groupe} introuvable dans le menu")
+        finally:
+            GROUPE = ancien
+    res, vu = {}, None
+    for n in range(SEMAINES):
+        await dump(page, f"04_{nom}_semaine_{n}")
+        g = await page.evaluate(GEOM_JS)
+        with open(f"{OUT}/{nom}_semaine_{n}.json", "w", encoding="utf-8") as f:
+            json.dump(g, f, ensure_ascii=False, indent=1)
+        ws, evs = lire_grille(g, today)
+        if ws == vu:
+            L(f"[{nom}] la semaine n'a pas changé après le clic, arrêt")
+            break
+        vu = ws
+        res[ws] = evs
+        L(f"[{nom}] semaine du {ws} : {len(evs)} séances")
+        if n + 1 < SEMAINES and not await semaine_suivante(page):
+            L(f"[{nom}] pas de semaine suivante accessible")
+            break
+    await page.close()
+    return res
+
+def mm(t):
+    h, m = map(int, t.split(":")); return h * 60 + m
+
+def chevauche(a, b):
+    return a["date"] == b["date"] and mm(a["start"]) < mm(b["end"]) and mm(b["start"]) < mm(a["end"])
+
+def meme(a, b):
+    return a["date"] == b["date"] and a["start"] == b["start"] and a["course"][:12].lower() == b["course"][:12].lower()
+
+def fusion(commun, mien, autre):
+    """Horaire final = séances de mon groupe + séances communes.
+    Une séance de la vue « sans groupe » est retirée si elle chevauche une séance de mon groupe
+    (elle est remplacée par la mienne) ou si c'est une séance de l'autre groupe."""
+    out = []
+    for e in mien:
+        out.append({**e, "groupe": GROUPE})
+    for e in commun:
+        if any(chevauche(e, m) for m in mien):
+            continue
+        if any(meme(e, o) for o in autre):
+            continue
+        out.append({**e, "groupe": ""})
+    return sorted(out, key=lambda e: (e["date"], e["start"]))
+
 async def main():
     today = dt.datetime.now(TZ).date()
     try:
         data = json.load(open("horaire.json", encoding="utf-8"))
     except Exception:
         data = {"weeks": {}}
-    lues = {}
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         ctx = await browser.new_context(locale="fr-BE", timezone_id="Europe/Brussels",
                                         viewport={"width": 1600, "height": 1300})
-        page = await ctx.new_page()
-        # Pronote garde des connexions ouvertes en continu : on n'attend pas que le réseau se calme
         try:
-            rep = await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
-            L(f"page chargée : statut {rep.status if rep else '?'}")
-        except Exception as e:
-            L(f"chargement de la page : {e!r}")
-        try:
-            await page.wait_for_selector("input:visible", timeout=60000)
-            L("champs de recherche affichés")
-        except Exception:
-            L("aucun champ visible après 60 s")
-        await page.wait_for_timeout(4000)
-        await dump(page, "01_accueil")
-        box = await choisir_promo(page)
-        await dump(page, "02_promo")
-        if not box:
-            L("ÉCHEC : promotion introuvable"); await browser.close(); return 1
-        if not await choisir_groupe(page, box):
-            L(f"ÉCHEC : {GROUPE} introuvable dans le menu"); await dump(page, "03_groupe"); await browser.close(); return 1
-        for n in range(SEMAINES):
-            await dump(page, f"04_semaine_{n}")
-            g = await page.evaluate(GEOM_JS)
-            with open(f"{OUT}/semaine_{n}.json", "w", encoding="utf-8") as f:
-                json.dump(g, f, ensure_ascii=False, indent=1)
+            commun = await lire_vue(ctx, None, today)
+            mien = await lire_vue(ctx, GROUPE, today)
             try:
-                ws, evs = lire_grille(g, today)
-                lues[ws] = evs
-                L(f"semaine du {ws} : {len(evs)} séances")
+                autre = await lire_vue(ctx, AUTRE, today)
             except Exception as e:
-                L(f"lecture semaine {n} : {e!r}")
-                if n == 0:
-                    await browser.close(); return 1
-            if n + 1 < SEMAINES and not await semaine_suivante(page):
-                L("pas de semaine suivante accessible"); break
-        await browser.close()
+                L(f"vue {AUTRE} non lue ({e!r}) : seules les séances qui chevauchent les tiennes seront retirées")
+                autre = {}
+        finally:
+            await browser.close()
+
+    lues = {}
+    for ws in sorted(set(commun) | set(mien)):
+        lues[ws] = fusion(commun.get(ws, []), mien.get(ws, []), autre.get(ws, []))
+        L(f"semaine du {ws} : {len(lues[ws])} séances au final "
+          f"({len(mien.get(ws, []))} de ton groupe)")
+    if not lues:
+        L("ÉCHEC : aucune semaine lue"); return 1
 
     data["weeks"].update(lues)
     limite = (today - dt.timedelta(days=60)).isoformat()
