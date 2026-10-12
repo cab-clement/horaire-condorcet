@@ -90,29 +90,61 @@ async def degager(page, etape):
     L(f"voile toujours présent ({etape})")
     return False
 
+PROMO_RE = re.compile(r"B1\W*Bac\s+en\s+a.rotechnique", re.I)
+
+async def cliquer_promo(page, c):
+    sugg = page.get_by_text(PROMO_RE)
+    for j in range(await sugg.count() - 1, -1, -1):
+        el = sugg.nth(j)
+        try:
+            if not await el.is_visible():
+                continue
+            if await el.evaluate("e => e.tagName === 'INPUT'"):
+                continue
+            await degager(page, "suggestions")
+            try:
+                await el.click(timeout=5000)
+            except Exception:
+                await el.dispatch_event("click")
+            return True
+        except Exception as e:
+            L(f"clic suggestion: {e!r}")
+    return False
+
 async def choisir_promo(page):
     await degager(page, "accueil")
     champs = page.locator("input:visible")
-    for i in range(await champs.count()):
+    n = await champs.count()
+    L(f"{n} champ(s) texte visibles")
+    for i in range(n):
         c = champs.nth(i)
         try:
+            info = await c.evaluate("e => ({id: e.id, ph: e.placeholder, val: e.value, ro: e.readOnly, aria: e.getAttribute('aria-label') || ''})")
+            L(f"champ {i} : {info}")
             await c.focus()
-            await c.fill("")
-            await c.type("aérotechnique", delay=60)
-            await page.wait_for_timeout(3000)
-            sugg = page.get_by_text(re.compile(re.escape(PROMO).replace("é", "."))).last
-            if await sugg.count() and await sugg.is_visible():
-                await degager(page, f"suggestions_{i}")
-                try:
-                    await sugg.click(timeout=5000)
-                except Exception:
+            await page.keyboard.press("Control+A")
+            await page.keyboard.press("Backspace")
+            await c.type("aérotechnique", delay=80)
+            await page.wait_for_timeout(3500)
+            await dump(page, f"02_frappe_champ{i}")
+            ok = await cliquer_promo(page, c)
+            if not ok:
+                # certaines listes ne s'ouvrent qu'avec Entrée ou flèche bas
+                for touche in ["ArrowDown", "Enter"]:
                     await c.focus()
-                    await page.keyboard.press("ArrowDown")
-                    await page.keyboard.press("Enter")
+                    await page.keyboard.press(touche)
+                    await page.wait_for_timeout(3000)
+                    await dump(page, f"02_{touche}_champ{i}")
+                    ok = await cliquer_promo(page, c)
+                    if ok:
+                        break
+            if ok:
                 await page.wait_for_timeout(5000)
                 await degager(page, "promo")
                 L(f"promotion choisie (champ {i})")
                 return await c.bounding_box()
+            await page.keyboard.press("Escape")
+            await degager(page, f"apres_champ{i}")
         except Exception as e:
             L(f"champ {i}: {e!r}")
     return None
