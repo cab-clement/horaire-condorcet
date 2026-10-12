@@ -1,0 +1,120 @@
+{
+ "weeks": {
+  "2026-10-12": [
+   {
+    "date": "2026-10-14",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M ROLAND Jean-Luc",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Technologie avionique Labos"
+   },
+   {
+    "date": "2026-10-14",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M PHILIPPE Marc",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Anglais aéronautique B1.1"
+   },
+   {
+    "date": "2026-10-15",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M NDUNGIDI KIAZAYILA Papy",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Électricité B1.1 Labos"
+   },
+   {
+    "date": "2026-10-15",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M NDUNGIDI KIAZAYILA Papy",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Électricité B1.1 Labos"
+   }
+  ],
+  "2026-10-19": [
+   {
+    "date": "2026-10-19",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DAUMERIE Cédric",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Dessin et croquis mécaniques"
+   },
+   {
+    "date": "2026-10-19",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DAUMERIE Cédric",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Dessin et croquis mécaniques"
+   },
+   {
+    "date": "2026-10-21",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M PHILIPPE Marc",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Anglais aéronautique B1.1"
+   },
+   {
+    "date": "2026-10-21",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M ROLAND Jean-Luc",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Technologie avionique Labos"
+   },
+   {
+    "date": "2026-10-22",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DAUMERIE Cédric",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Dessin et croquis mécaniques"
+   },
+   {
+    "date": "2026-10-22",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Ouverture des détails du cours",
+    "teacher": "M DAUMERIE Cédric",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "Dessin et croquis mécaniques"
+   }
+  ],
+  "2026-10-26": []
+ },
+ "updated": "2026-10-12T13:22+02:00"
+}
