@@ -90,16 +90,23 @@ async def degager(page, etape):
     L(f"voile toujours présent ({etape})")
     return False
 
-PROMO_RE = re.compile(r"B1\W*Bac\s+en\s+a.rotechnique", re.I)
+# Il existe plusieurs promotions « B1-Bac en aérotechnique… » : il faut exactement celle de Charleroi
+PROMO_RE = re.compile(r"^\s*B1\W*Bac\s+en\s+a.rotechnique\s*\(Charleroi\)\s*$", re.I)
+PROMO_TAPE = os.environ.get("PROMO_TAPE", "aérotechnique (Charleroi)")
+
+async def lister_suggestions(page):
+    textes = await page.evaluate("""() => [...document.querySelectorAll('body *')]
+      .filter(e => e.children.length === 0 && e.offsetParent !== null && /rotechnique/i.test(e.textContent || ''))
+      .map(e => e.textContent.trim()).slice(0, 30)""")
+    L(f"suggestions visibles : {textes}")
 
 async def cliquer_promo(page, c):
+    await lister_suggestions(page)
     sugg = page.get_by_text(PROMO_RE)
     for j in range(await sugg.count() - 1, -1, -1):
         el = sugg.nth(j)
         try:
-            if not await el.is_visible():
-                continue
-            if await el.evaluate("e => e.tagName === 'INPUT'"):
+            if not await el.is_visible() or await el.evaluate("e => e.tagName === 'INPUT'"):
                 continue
             await degager(page, "suggestions")
             try:
@@ -111,40 +118,47 @@ async def cliquer_promo(page, c):
             L(f"clic suggestion: {e!r}")
     return False
 
+async def promo_ok(page, c):
+    try:
+        val = await c.input_value()
+    except Exception:
+        val = ""
+    L(f"promotion affichée : {val!r}")
+    return bool(PROMO_RE.match(val)) or ("charleroi" in val.lower() and val.strip().upper().startswith("B1"))
+
 async def choisir_promo(page):
     await degager(page, "accueil")
-    champs = page.locator("input:visible")
-    n = await champs.count()
-    L(f"{n} champ(s) texte visibles")
-    for i in range(n):
+    champs = page.locator("input[aria-label*='promotion' i]:visible")
+    if not await champs.count():
+        champs = page.locator("input:visible")
+    for i in range(await champs.count()):
         c = champs.nth(i)
         try:
-            info = await c.evaluate("e => ({id: e.id, ph: e.placeholder, val: e.value, ro: e.readOnly, aria: e.getAttribute('aria-label') || ''})")
-            L(f"champ {i} : {info}")
-            await c.focus()
-            await page.keyboard.press("Control+A")
-            await page.keyboard.press("Backspace")
-            await c.type("aérotechnique", delay=80)
-            await page.wait_for_timeout(3500)
-            await dump(page, f"02_frappe_champ{i}")
-            ok = await cliquer_promo(page, c)
-            if not ok:
-                # certaines listes ne s'ouvrent qu'avec Entrée ou flèche bas
-                for touche in ["ArrowDown", "Enter"]:
-                    await c.focus()
-                    await page.keyboard.press(touche)
-                    await page.wait_for_timeout(3000)
-                    await dump(page, f"02_{touche}_champ{i}")
-                    ok = await cliquer_promo(page, c)
-                    if ok:
-                        break
-            if ok:
-                await page.wait_for_timeout(5000)
-                await degager(page, "promo")
-                L(f"promotion choisie (champ {i})")
-                return await c.bounding_box()
-            await page.keyboard.press("Escape")
-            await degager(page, f"apres_champ{i}")
+            for texte in [PROMO_TAPE, "Charleroi", "aérotechnique"]:
+                await c.focus()
+                await page.keyboard.press("Control+A")
+                await page.keyboard.press("Backspace")
+                await c.type(texte, delay=80)
+                await page.wait_for_timeout(3500)
+                await dump(page, f"02_frappe_{texte[:12]}")
+                ok = await cliquer_promo(page, c)
+                if not ok:
+                    for touche in ["ArrowDown", "Enter"]:
+                        await c.focus()
+                        await page.keyboard.press(touche)
+                        await page.wait_for_timeout(3000)
+                        ok = await cliquer_promo(page, c)
+                        if ok:
+                            break
+                if ok:
+                    await page.wait_for_timeout(5000)
+                    await degager(page, "promo")
+                    if await promo_ok(page, c):
+                        L(f"promotion choisie en tapant {texte!r}")
+                        return await c.bounding_box()
+                    L("mauvaise promotion, nouvel essai")
+                await page.keyboard.press("Escape")
+                await degager(page, "promo_essai")
         except Exception as e:
             L(f"champ {i}: {e!r}")
     return None
@@ -172,7 +186,9 @@ async def choisir_groupe(page, promo_box):
     await degager(page, "groupe")
     # 1) le menu porte souvent une étiquette « groupe » ; 2) sinon un menu déroulant ; 3) sinon ce qui est à droite de la promo
     ouvreurs = []
-    for sel in ["[aria-label*='groupe' i]:visible", "[title*='groupe' i]:visible",
+    for sel in ["[id$='Instances[1].Instances[2].bouton_Edit']:visible",
+                "[id$='Instances[1].Instances[2]_wrapperbouton']:visible",
+                "[aria-label*='groupe' i]:visible", "[title*='groupe' i]:visible",
                 "[role=combobox]:visible", "[aria-haspopup]:visible"]:
         loc = page.locator(sel)
         for i in range(await loc.count()):
@@ -190,12 +206,12 @@ async def choisir_groupe(page, promo_box):
     vus = set()
     for k, el in enumerate(ouvreurs[:20]):
         try:
-            info = await el.evaluate("e => (e.id || '') + ' | ' + (e.getAttribute('aria-label') || '') + ' | ' + (e.innerText || e.value || '').trim().slice(0, 40)")
+            info = await el.evaluate("e => (e.id || '') + ' | ' + (e.getAttribute('aria-label') || '') + ' | ' + (e.innerText || e.value || '').trim().slice(0, 60)")
             if info in vus:
                 continue
             vus.add(info)
             L(f"menu {k} : {info}")
-            if "promotion" in info.lower():
+            if "promotion" in info.lower() or "Instances[0]" in info or "Instances[1].Instances[1]" in info:
                 continue
             try:
                 await el.click(timeout=4000)
