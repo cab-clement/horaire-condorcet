@@ -1,4 +1,4 @@
- # Robot de synchronisation de l'horaire Condorcet (Pronote Campus, espace invité).
+# Robot de synchronisation de l'horaire Condorcet (Pronote Campus, espace invité).
 # 1. Ouvre le site, choisit la promotion et le groupe.
 # 2. Lit les cours de la semaine affichée (et des suivantes) à partir de leur position à l'écran.
 # 3. Écrit horaire.json (historique) et horaire.ics (pour s'abonner dans Calendrier).
@@ -243,8 +243,18 @@ async def main():
         ctx = await browser.new_context(locale="fr-BE", timezone_id="Europe/Brussels",
                                         viewport={"width": 1600, "height": 1300})
         page = await ctx.new_page()
-        await page.goto(URL, wait_until="networkidle", timeout=90000)
-        await page.wait_for_timeout(5000)
+        # Pronote garde des connexions ouvertes en continu : on n'attend pas que le réseau se calme
+        try:
+            rep = await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+            L(f"page chargée : statut {rep.status if rep else '?'}")
+        except Exception as e:
+            L(f"chargement de la page : {e!r}")
+        try:
+            await page.wait_for_selector("input:visible", timeout=60000)
+            L("champs de recherche affichés")
+        except Exception:
+            L("aucun champ visible après 60 s")
+        await page.wait_for_timeout(4000)
         await dump(page, "01_accueil")
         box = await choisir_promo(page)
         await dump(page, "02_promo")
@@ -282,7 +292,11 @@ async def main():
     return 0
 
 if __name__ == "__main__":
-    code = asyncio.run(main())
+    try:
+        code = asyncio.run(main())
+    except Exception as e:
+        L(f"ERREUR : {e!r}")
+        code = 1
     with open(f"{OUT}/journal.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(log))
     sys.exit(code)
