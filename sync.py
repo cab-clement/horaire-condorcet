@@ -149,31 +149,79 @@ async def choisir_promo(page):
             L(f"champ {i}: {e!r}")
     return None
 
+async def cliquer_option_groupe(page):
+    motif = re.compile(r"\b" + re.escape(GROUPE) + r"\b", re.I)
+    for loc in [page.get_by_role("option", name=motif), page.get_by_role("menuitem", name=motif),
+                page.get_by_role("treeitem", name=motif), page.get_by_text(motif)]:
+        for j in range(await loc.count() - 1, -1, -1):
+            el = loc.nth(j)
+            try:
+                if not await el.is_visible() or await el.evaluate("e => e.tagName === 'INPUT'"):
+                    continue
+                try:
+                    await el.click(timeout=4000)
+                except Exception:
+                    await el.dispatch_event("click")
+                return True
+            except Exception as e:
+                L(f"clic option groupe: {e!r}")
+    return False
+
 async def choisir_groupe(page, promo_box):
-    # Le menu des groupes est juste à droite du champ promotion, sur la même ligne
-    cy = promo_box["y"] + promo_box["height"] / 2
-    els = page.locator("div:visible, input:visible, select:visible, [role=combobox]:visible")
-    cands = []
-    for i in range(min(await els.count(), 3000)):
-        b = await els.nth(i).bounding_box()
-        if b and abs(b["y"] + b["height"] / 2 - cy) < 12 and b["x"] > promo_box["x"] + promo_box["width"] \
-                and 150 < b["width"] < 900 and b["height"] < 60:
-            cands.append((b["x"], -b["width"], i))
+    await page.wait_for_timeout(3000)
     await degager(page, "groupe")
-    for _, _, i in sorted(cands)[:6]:
+    # 1) le menu porte souvent une étiquette « groupe » ; 2) sinon un menu déroulant ; 3) sinon ce qui est à droite de la promo
+    ouvreurs = []
+    for sel in ["[aria-label*='groupe' i]:visible", "[title*='groupe' i]:visible",
+                "[role=combobox]:visible", "[aria-haspopup]:visible"]:
+        loc = page.locator(sel)
+        for i in range(await loc.count()):
+            ouvreurs.append(loc.nth(i))
+    if promo_box:
+        cy = promo_box["y"] + promo_box["height"] / 2
+        els = page.locator("div:visible, input:visible")
+        cands = []
+        for i in range(min(await els.count(), 3000)):
+            bb = await els.nth(i).bounding_box()
+            if bb and abs(bb["y"] + bb["height"] / 2 - cy) < 15 and bb["x"] > promo_box["x"] + promo_box["width"] \
+                    and 100 < bb["width"] < 900 and bb["height"] < 70:
+                cands.append((bb["x"], -bb["width"], i))
+        ouvreurs += [els.nth(i) for _, _, i in sorted(cands)[:6]]
+    vus = set()
+    for k, el in enumerate(ouvreurs[:20]):
         try:
-            await els.nth(i).click(timeout=4000)
-            await page.wait_for_timeout(1500)
-            opt = page.get_by_text(GROUPE, exact=True).last
-            if await opt.count() and await opt.is_visible():
-                await opt.click()
+            info = await el.evaluate("e => (e.id || '') + ' | ' + (e.getAttribute('aria-label') || '') + ' | ' + (e.innerText || e.value || '').trim().slice(0, 40)")
+            if info in vus:
+                continue
+            vus.add(info)
+            L(f"menu {k} : {info}")
+            if "promotion" in info.lower():
+                continue
+            try:
+                await el.click(timeout=4000)
+            except Exception:
+                await el.focus()
+                await page.keyboard.press("Enter")
+            await page.wait_for_timeout(2500)
+            await dump(page, f"04_menu_{k}")
+            ok = await cliquer_option_groupe(page)
+            if not ok:
+                for touche in ["ArrowDown", "Alt+ArrowDown", "Space"]:
+                    await el.focus()
+                    await page.keyboard.press(touche)
+                    await page.wait_for_timeout(2000)
+                    ok = await cliquer_option_groupe(page)
+                    if ok:
+                        break
+            if ok:
                 await page.wait_for_timeout(5000)
                 await degager(page, "apres_groupe")
-                L(f"{GROUPE} choisi")
+                L(f"{GROUPE} choisi (menu {k})")
                 return True
             await page.keyboard.press("Escape")
+            await page.wait_for_timeout(800)
         except Exception as e:
-            L(f"menu groupe: {e!r}")
+            L(f"menu {k}: {e!r}")
     return False
 
 # ---------------------------------------------------------------- lecture de la grille
