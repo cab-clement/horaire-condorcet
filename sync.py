@@ -3,7 +3,7 @@
 # 2. Lit les cours de la semaine affichée (et des suivantes) à partir de leur position à l'écran.
 # 3. Écrit horaire.json (historique) et horaire.ics (pour s'abonner dans Calendrier).
 # Une capture de chaque étape est enregistrée dans debug/ pour corriger le robot si le site change.
-import asyncio, datetime as dt, hashlib, json, os, re, sys
+import asyncio, datetime as dt, hashlib, json, os, re, sys, urllib.request, urllib.error
 from zoneinfo import ZoneInfo
 from playwright.async_api import async_playwright
 
@@ -304,7 +304,8 @@ def lire_grille(g, today):
         cx = b["x"] + b["w"] / 2
         date = min(centers, key=lambda c: abs(c[0] - cx))[1]
         lignes = [l.strip() for l in (b["t"] or "").split("\n")
-                  if l.strip() and not l.strip().startswith("<") and not re.fullmatch(r"\d{1,2}", l.strip())]
+                  if l.strip() and not l.strip().startswith("<") and not re.fullmatch(r"\d{1,2}", l.strip())
+                  and not re.match(r"(?i)^(ouverture|ouvrir|afficher|fermeture) (des|du|le|la) d.tails", l.strip())]
         prof = next((l for l in lignes if re.match(r"^(M|Mme|Mlle)\s", l)), "")
         local = next((l for l in lignes if re.match(r"^[A-Z]{2,5}\s+-\s+", l)), "")
         reste = [l for l in lignes if l not in (prof, local)]
@@ -372,6 +373,41 @@ def ics(events):
     out.append("END:VCALENDAR")
     return "\r\n".join(out) + "\r\n"
 
+
+# ---------------------------------------------------------------- envoi vers Notion (pour l'appli Horaire B1 Aéro)
+NOTION_TOKEN = os.environ.get("NOTION_TOKEN", "").strip()
+NOTION_PAGE = os.environ.get("NOTION_PAGE", "3f713405911081379ac4f532b0005dd2").replace("-", "").strip()
+
+def notion(method, path, body=None):
+    req = urllib.request.Request("https://api.notion.com/v1/" + path, method=method,
+                                 data=json.dumps(body).encode() if body is not None else None,
+                                 headers={"Authorization": "Bearer " + NOTION_TOKEN,
+                                          "Notion-Version": "2022-06-28", "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.loads(r.read() or b"{}")
+
+def envoyer_notion(data, today):
+    if not NOTION_TOKEN:
+        L("Notion : pas de clé NOTION_TOKEN, envoi ignoré")
+        return
+    debut = (today - dt.timedelta(days=today.weekday() + 7)).isoformat()
+    utile = {"updated": data["updated"], "weeks": {k: v for k, v in data["weeks"].items() if k >= debut}}
+    txt = json.dumps(utile, ensure_ascii=False, separators=(",", ":"))
+    morceaux = [{"type": "text", "text": {"content": txt[i:i + 1900]}} for i in range(0, len(txt), 1900)][:100]
+    bloc = {"rich_text": morceaux, "language": "json"}
+    try:
+        enfants = notion("GET", f"blocks/{NOTION_PAGE}/children?page_size=100").get("results", [])
+        code = next((b for b in enfants if b.get("type") == "code"), None)
+        if code:
+            notion("PATCH", f"blocks/{code['id']}", {"code": bloc})
+        else:
+            notion("PATCH", f"blocks/{NOTION_PAGE}/children", {"children": [{"object": "block", "type": "code", "code": bloc}]})
+        L(f"Notion : page mise à jour ({len(txt)} caractères)")
+    except urllib.error.HTTPError as e:
+        L(f"Notion : erreur {e.code} {e.read()[:300]!r} (la page est-elle connectée à l'intégration ?)")
+    except Exception as e:
+        L(f"Notion : {e!r}")
+
 # ---------------------------------------------------------------- principal
 AUTRE = "Groupe A" if GROUPE.strip().upper().endswith("B") else "Groupe B"
 
@@ -402,7 +438,14 @@ async def lire_vue(ctx, groupe, today):
     res, vu = {}, None
     for n in range(SEMAINES):
         await dump(page, f"04_{nom}_semaine_{n}")
+        # attendre que les cours soient vraiment affichés (le site peut être lent)
         g = await page.evaluate(GEOM_JS)
+        for _ in range(8):
+            if g["blocks"]:
+                break
+            await page.wait_for_timeout(2500)
+            await degager(page, f"{nom}_attente")
+            g = await page.evaluate(GEOM_JS)
         with open(f"{OUT}/{nom}_semaine_{n}.json", "w", encoding="utf-8") as f:
             json.dump(g, f, ensure_ascii=False, indent=1)
         ws, evs = lire_grille(g, today)
@@ -468,10 +511,14 @@ async def main():
         lues[ws] = fusion(commun.get(ws, []), mien.get(ws, []), autre.get(ws, []))
         L(f"semaine du {ws} : {len(lues[ws])} séances au final "
           f"({len(mien.get(ws, []))} de ton groupe)")
-    if not lues:
-        L("ÉCHEC : aucune semaine lue"); return 1
+    if not lues or not any(lues.values()):
+        L("ÉCHEC : aucune séance lue sur toutes les semaines, l'ancien horaire est gardé"); return 1
 
-    data["weeks"].update(lues)
+    for ws, evs in lues.items():
+        if not evs and data["weeks"].get(ws):
+            L(f"semaine du {ws} lue vide alors qu'elle avait des cours : ancienne version gardée")
+            continue
+        data["weeks"][ws] = evs
     limite = (today - dt.timedelta(days=60)).isoformat()
     data["weeks"] = {k: v for k, v in sorted(data["weeks"].items()) if k >= limite}
     data["updated"] = dt.datetime.now(TZ).isoformat(timespec="minutes")
@@ -481,6 +528,7 @@ async def main():
     with open("horaire.ics", "w", encoding="utf-8", newline="") as f:
         f.write(ics(tous))
     L(f"OK : {len(tous)} séances dans le calendrier")
+    envoyer_notion(data, today)
     return 0
 
 if __name__ == "__main__":
