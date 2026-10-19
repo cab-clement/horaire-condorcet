@@ -1,8 +1,201 @@
 {
  "weeks": {
   "2026-10-12": [],
-  "2026-10-19": [],
+  "2026-10-19": [
+   {
+    "date": "2026-10-19",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Électricité B1.1",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "NDUNGIDI KIAZAYILA Papy",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-19",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Dessin et croquis mécaniques",
+    "teacher": "",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "DAUMERIE Cédric",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-19",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Dessin et croquis mécaniques",
+    "teacher": "",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "DAUMERIE Cédric",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-20",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Électricité B1.1",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "NDUNGIDI KIAZAYILA Papy",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-20",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Connaissance des matériaux aéronautiques",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "PAREDES OREJUDO Manuel",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-20",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Sciences des matériaux et applications B1.1",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "DEHON Roland",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-20",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Sciences des matériaux et applications B1.1",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "DEHON Roland",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-21",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Technologie mécanique et métrologie",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "CAMPIONE Adrien",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-21",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Anglais aéronautique B1.1",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "PHILIPPE Marc",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-21",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Technologie avionique",
+    "teacher": "",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "ROLAND Jean-Luc Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-22",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Dessin et croquis mécaniques",
+    "teacher": "",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "DAUMERIE Cédric",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-22",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Dessin et croquis mécaniques",
+    "teacher": "",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "DAUMERIE Cédric",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-10-23",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Mathématiques appliquées B1.1",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "LENOIR Guillaume",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-23",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Technologie avionique",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "ROLAND Jean-Luc",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-23",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Introduction aux matériaux composites",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "KINARD Alain",
+    "groupe": ""
+   },
+   {
+    "date": "2026-10-23",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Introduction aux matériaux composites",
+    "teacher": "",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "KINARD Alain",
+    "groupe": ""
+   }
+  ],
   "2026-10-26": []
  },
- "updated": "2026-10-19T07:48+02:00"
+ "updated": "2026-10-19T09:13+02:00"
 }
