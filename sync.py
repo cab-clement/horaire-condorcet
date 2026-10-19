@@ -45,7 +45,8 @@ GEOM_JS = r"""() => {
     else if (/^(\d{1,2}|F)$/.test(t) && e.children.length === 0)
       out.ruler.push({t, bg: getComputedStyle(e).backgroundColor,
         pbg: getComputedStyle(e.parentElement).backgroundColor, ...box(e)});
-    if (t && /(^|\n)\s*(M|Mme|Mlle)\s+[A-ZÀ-Ý]/.test(t) && /\n/.test(t))
+    if (t && /\n/.test(t) && t.length < 400 && (/(^|\n)\s*(M|Mme|Mlle|Mr|Dr)\.?\s+[A-ZÀ-Ý]/.test(t)
+        || /(^|\n)\s*[A-Z]{2,6}\s+-\s+\S/.test(t) || /(Auditoire|Salle|Labo|Atelier|Hangar)/i.test(t)))
       out.blocks.push({t, title: e.title || '', ...box(e)});
   }
   return out;
@@ -449,6 +450,8 @@ async def lire_vue(ctx, groupe, today):
         with open(f"{OUT}/{nom}_semaine_{n}.json", "w", encoding="utf-8") as f:
             json.dump(g, f, ensure_ascii=False, indent=1)
         ws, evs = lire_grille(g, today)
+        if not evs:
+            L(f"[{nom}] grille vide : {len(g['days'])} jours, {len(g['hours'])} heures, {len(g['blocks'])} blocs repérés")
         if ws == vu:
             L(f"[{nom}] la semaine n'a pas changé après le clic, arrêt")
             break
@@ -540,3 +543,4 @@ if __name__ == "__main__":
     with open(f"{OUT}/journal.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(log))
     sys.exit(code)
+  
