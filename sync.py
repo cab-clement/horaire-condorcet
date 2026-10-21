@@ -308,6 +308,10 @@ def lire_grille(g, today):
                   if l.strip() and not l.strip().startswith("<") and not re.fullmatch(r"\d{1,2}", l.strip())
                   and not re.match(r"(?i)^(ouverture|ouvrir|afficher|fermeture) (des|du|le|la) d.tails", l.strip())]
         prof = next((l for l in lignes if re.match(r"^(M|Mme|Mlle)\s", l)), "")
+        if not prof:
+            # le site affiche parfois le prof sans « M » : NOM EN MAJUSCULES + Prénom
+            prof = next((l for l in lignes[1:] if re.match(r"^[A-ZÀ-Ý][A-ZÀ-Ý'\- ]+\s[A-ZÀ-Ý][a-zà-ÿ'\-]+", l)
+                         and not re.match(r"^[A-Z]{2,6}\s+-\s", l)), "")
         local = next((l for l in lignes if re.match(r"^[A-Z]{2,5}\s+-\s+", l)), "")
         reste = [l for l in lignes if l not in (prof, local)]
         if not reste:
