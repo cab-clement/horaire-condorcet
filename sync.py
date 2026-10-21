@@ -11,7 +11,7 @@ URL = os.environ.get("HORAIRE_URL", "https://horaires2026.condorcet.be/invite")
 PROMO = os.environ.get("PROMO", "B1-Bac en aérotechnique (Charleroi)")
 GROUPE = os.environ.get("GROUPE", "Groupe B")          # ton groupe
 AUTRES = [g.strip() for g in os.environ.get("AUTRES_GROUPES", "Groupe A").split(",") if g.strip()]
-SEMAINES = int(os.environ.get("SEMAINES", "3"))   # semaine actuelle + suivantes
+SEMAINES = int(os.environ.get("SEMAINES", "5"))   # semaine actuelle + suivantes
 TZ = ZoneInfo("Europe/Brussels")
 OUT = "debug"
 os.makedirs(OUT, exist_ok=True)
@@ -387,27 +387,52 @@ def notion(method, path, body=None):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read() or b"{}")
 
+GARDER_HEURES = int(os.environ.get("GARDER_HEURES", "48"))
+
 def envoyer_notion(data, today):
+    """Crée une sous-page « AAAA-MM-JJ HHhMM » avec toutes les données, puis supprime celles de plus de 2 jours."""
     if not NOTION_TOKEN:
         L("Notion : pas de clé NOTION_TOKEN, envoi ignoré")
         return
     debut = (today - dt.timedelta(days=today.weekday() + 7)).isoformat()
-    utile = {"updated": data["updated"], "weeks": {k: v for k, v in data["weeks"].items() if k >= debut}}
+    utile = {"updated": data["updated"], "format": 2,
+             "weeks": {k: v for k, v in data.get("full", {}).items() if k >= debut}}
     txt = json.dumps(utile, ensure_ascii=False, separators=(",", ":"))
-    morceaux = [{"type": "text", "text": {"content": txt[i:i + 1900]}} for i in range(0, len(txt), 1900)][:100]
-    bloc = {"rich_text": morceaux, "language": "json"}
+    morceaux = [{"type": "text", "text": {"content": txt[i:i + 1900]}} for i in range(0, len(txt), 1900)]
+    blocs = [{"object": "block", "type": "code",
+              "code": {"rich_text": morceaux[i:i + 100], "language": "json"}} for i in range(0, len(morceaux), 100)]
+    titre = dt.datetime.now(TZ).strftime("%Y-%m-%d %Hh%M")
     try:
-        enfants = notion("GET", f"blocks/{NOTION_PAGE}/children?page_size=100").get("results", [])
-        code = next((b for b in enfants if b.get("type") == "code"), None)
-        if code:
-            notion("PATCH", f"blocks/{code['id']}", {"code": bloc})
-        else:
-            notion("PATCH", f"blocks/{NOTION_PAGE}/children", {"children": [{"object": "block", "type": "code", "code": bloc}]})
-        L(f"Notion : page mise à jour ({len(txt)} caractères)")
+        notion("POST", "pages", {"parent": {"page_id": NOTION_PAGE},
+                                 "properties": {"title": {"title": [{"text": {"content": titre}}]}},
+                                 "children": blocs})
+        L(f"Notion : sauvegarde « {titre} » créée ({len(txt)} caractères)")
     except urllib.error.HTTPError as e:
         L(f"Notion : erreur {e.code} {e.read()[:300]!r} (la page est-elle connectée à l'intégration ?)")
+        return
     except Exception as e:
         L(f"Notion : {e!r}")
+        return
+    # ménage : sous-pages de plus de GARDER_HEURES heures
+    limite = dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=GARDER_HEURES)
+    curseur, supprimees = None, 0
+    try:
+        while True:
+            q = "page_size=100" + (f"&start_cursor={curseur}" if curseur else "")
+            r = notion("GET", f"blocks/{NOTION_PAGE}/children?{q}")
+            for bl in r.get("results", []):
+                if bl.get("type") != "child_page":
+                    continue
+                cree = dt.datetime.fromisoformat(bl["created_time"].replace("Z", "+00:00"))
+                if cree < limite:
+                    notion("PATCH", f"pages/{bl['id']}", {"archived": True})
+                    supprimees += 1
+            if not r.get("has_more"):
+                break
+            curseur = r.get("next_cursor")
+        L(f"Notion : {supprimees} ancienne(s) sauvegarde(s) supprimée(s)")
+    except Exception as e:
+        L(f"Notion : ménage impossible ({e!r})")
 
 # ---------------------------------------------------------------- principal
 AUTRE = "Groupe A" if GROUPE.strip().upper().endswith("B") else "Groupe B"
@@ -509,21 +534,30 @@ async def main():
         finally:
             await browser.close()
 
-    lues = {}
-    for ws in sorted(set(commun) | set(mien)):
+    lues, full = {}, {}
+    gA, gB = ("Groupe A", "Groupe B")
+    vues = {GROUPE: mien, AUTRE: autre}
+    for ws in sorted(set(commun) | set(mien) | set(autre)):
+        a_, b_ = vues[gA].get(ws, []), vues[gB].get(ws, [])
+        seul_commun = [e for e in commun.get(ws, [])
+                       if not any(chevauche(e, g) for g in a_ + b_) and not any(meme(e, g) for g in a_ + b_)]
+        full[ws] = {"commun": seul_commun, gA: a_, gB: b_}
         lues[ws] = fusion(commun.get(ws, []), mien.get(ws, []), autre.get(ws, []))
-        L(f"semaine du {ws} : {len(lues[ws])} séances au final "
-          f"({len(mien.get(ws, []))} de ton groupe)")
+        L(f"semaine du {ws} : {len(seul_commun)} communs, {len(a_)} groupe A, {len(b_)} groupe B "
+          f"({len(lues[ws])} dans ton calendrier)")
     if not lues or not any(lues.values()):
         L("ÉCHEC : aucune séance lue sur toutes les semaines, l'ancien horaire est gardé"); return 1
 
+    data.setdefault("full", {})
     for ws, evs in lues.items():
         if not evs and data["weeks"].get(ws):
             L(f"semaine du {ws} lue vide alors qu'elle avait des cours : ancienne version gardée")
             continue
         data["weeks"][ws] = evs
+        data["full"][ws] = full[ws]
     limite = (today - dt.timedelta(days=60)).isoformat()
     data["weeks"] = {k: v for k, v in sorted(data["weeks"].items()) if k >= limite}
+    data["full"] = {k: v for k, v in sorted(data.get("full", {}).items()) if k >= limite}
     data["updated"] = dt.datetime.now(TZ).isoformat(timespec="minutes")
     with open("horaire.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
@@ -543,4 +577,3 @@ if __name__ == "__main__":
     with open(f"{OUT}/journal.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(log))
     sys.exit(code)
-  
