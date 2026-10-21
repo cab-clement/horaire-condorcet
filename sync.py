@@ -327,7 +327,11 @@ def lire_grille(g, today):
     monday = monday - dt.timedelta(days=monday.weekday())
     return monday.isoformat(), sorted(events, key=lambda e: (e["date"], e["start"]))
 
-async def semaine_suivante(page):
+async def semaine_suivante(page, etat=None):
+    """Clique sur la case de la semaine suivante dans la réglette.
+    La case affichée est repérée par sa couleur unique ; si ce n'est plus possible
+    (semaine de congé « F » colorée autrement), on avance à partir de la position mémorisée."""
+    etat = etat if etat is not None else {}
     g = await page.evaluate(GEOM_JS)
     r = g["ruler"]
     if not r:
@@ -339,13 +343,18 @@ async def semaine_suivante(page):
     row = sorted(max(rows.values(), key=len), key=lambda c: c["x"])
     colors = [c["bg"] if c["bg"] not in ("rgba(0, 0, 0, 0)", "transparent") else c["pbg"] for c in row]
     uniq = [i for i, col in enumerate(colors) if colors.count(col) == 1]
-    if not uniq:
+    if "i" in etat and (not uniq or uniq[0] != etat["i"]):
+        i = etat["i"]
+        L(f"réglette : position mémorisée utilisée (case {i + 1})")
+    elif uniq:
+        i = uniq[0]
+    else:
         L("semaine affichée non repérée dans la réglette")
         return False
-    i = uniq[0]
     if i + 1 >= len(row):
         return False
     nxt = row[i + 1]
+    etat["i"] = i + 1
     sx, sy = await page.evaluate("[scrollX, scrollY]")
     await degager(page, "reglette")
     await page.mouse.click(nxt["x"] + nxt["w"] / 2 - sx, nxt["y"] + nxt["h"] / 2 - sy)
@@ -377,7 +386,7 @@ def ics(events):
 
 # ---------------------------------------------------------------- envoi vers Notion (pour l'appli Horaire B1 Aéro)
 NOTION_TOKEN = os.environ.get("NOTION_TOKEN", "").strip()
-NOTION_PAGE = os.environ.get("NOTION_PAGE", "3f713405911081379ac4f532b0005dd2").replace("-", "").strip()
+NOTION_PAGE = os.environ.get("NOTION_PAGE", "400811c3cd39817d947cf3ca61657440").replace("-", "").strip()
 
 def notion(method, path, body=None):
     req = urllib.request.Request("https://api.notion.com/v1/" + path, method=method,
@@ -461,7 +470,7 @@ async def lire_vue(ctx, groupe, today):
         raise RuntimeError(f"[{nom}] promotion introuvable")
     if groupe and not await choisir_groupe(page, box, groupe):
         raise RuntimeError(f"[{nom}] {groupe} introuvable dans le menu")
-    res, vu = {}, None
+    res, vu, etat = {}, None, {}
     for n in range(SEMAINES):
         await dump(page, f"04_{nom}_semaine_{n}")
         # attendre que les cours soient vraiment affichés (le site peut être lent)
@@ -483,7 +492,7 @@ async def lire_vue(ctx, groupe, today):
         vu = ws
         res[ws] = evs
         L(f"[{nom}] semaine du {ws} : {len(evs)} séances")
-        if n + 1 < SEMAINES and not await semaine_suivante(page):
+        if n + 1 < SEMAINES and not await semaine_suivante(page, etat):
             L(f"[{nom}] pas de semaine suivante accessible")
             break
     await page.close()
