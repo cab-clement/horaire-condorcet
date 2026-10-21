@@ -15,7 +15,7 @@ concurrency:
 jobs:
   synchro:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -32,7 +32,8 @@ jobs:
         env:
           PROMO: "B1-Bac en aérotechnique (Charleroi)"
           GROUPE: "Groupe B"
-          SEMAINES: "3"
+          SEMAINES: "5"
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python sync.py
 
       - name: Enregistrer le calendrier
