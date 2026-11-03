@@ -318,6 +318,30 @@
     "groupe": "Groupe B"
    },
    {
+    "date": "2026-11-05",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Mathématiques appliquées B1.1",
+    "teacher": "LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-11-05",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Mathématiques appliquées B1.1",
+    "teacher": "LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
     "date": "2026-11-06",
     "start": "08:20",
     "end": "10:20",
@@ -474,6 +498,30 @@
     "kind": "cours",
     "note": "",
     "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-11-12",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Mathématiques appliquées B1.1",
+    "teacher": "LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-11-12",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Mathématiques appliquées B1.1",
+    "teacher": "LENOIR Guillaume",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
    },
    {
     "date": "2026-11-13",
@@ -1107,7 +1155,7 @@
    }
   ]
  },
- "updated": "2026-11-02T18:17+01:00",
+ "updated": "2026-11-03T07:06+01:00",
  "full": {
   "2026-10-19": {
    "commun": [
@@ -1411,6 +1459,28 @@
      "note": ""
     },
     {
+     "date": "2026-11-05",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Mathématiques appliquées B1.1",
+     "teacher": "LENOIR Guillaume",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-11-05",
+     "start": "15:40",
+     "end": "17:40",
+     "course": "Mathématiques appliquées B1.1",
+     "teacher": "LENOIR Guillaume",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
      "date": "2026-11-06",
      "start": "08:20",
      "end": "10:20",
@@ -1499,28 +1569,6 @@
      "site": "WAN",
      "kind": "labo",
      "note": "Labos"
-    },
-    {
-     "date": "2026-11-05",
-     "start": "09:20",
-     "end": "10:20",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "LENOIR Guillaume",
-     "room": "Salle 51",
-     "site": "WAN",
-     "kind": "cours",
-     "note": ""
-    },
-    {
-     "date": "2026-11-05",
-     "start": "10:30",
-     "end": "12:30",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "LENOIR Guillaume",
-     "room": "Salle 51",
-     "site": "WAN",
-     "kind": "cours",
-     "note": ""
     }
    ],
    "Groupe B": [
@@ -1650,6 +1698,28 @@
      "note": ""
     },
     {
+     "date": "2026-11-12",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Mathématiques appliquées B1.1",
+     "teacher": "LENOIR Guillaume",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-11-12",
+     "start": "15:40",
+     "end": "17:40",
+     "course": "Mathématiques appliquées B1.1",
+     "teacher": "LENOIR Guillaume",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
      "date": "2026-11-13",
      "start": "08:20",
      "end": "10:20",
@@ -1697,17 +1767,6 @@
    "Groupe A": [
     {
      "date": "2026-11-09",
-     "start": "08:20",
-     "end": "10:20",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "LENOIR Guillaume",
-     "room": "Auditoire B",
-     "site": "WAN",
-     "kind": "cours",
-     "note": ""
-    },
-    {
-     "date": "2026-11-09",
      "start": "13:30",
      "end": "15:30",
      "course": "Électricité B1.1",
@@ -1727,28 +1786,6 @@
      "site": "WAN",
      "kind": "labo",
      "note": "Labos"
-    },
-    {
-     "date": "2026-11-12",
-     "start": "09:20",
-     "end": "10:20",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "LENOIR Guillaume",
-     "room": "Salle 51",
-     "site": "WAN",
-     "kind": "cours",
-     "note": ""
-    },
-    {
-     "date": "2026-11-12",
-     "start": "10:30",
-     "end": "12:30",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "LENOIR Guillaume",
-     "room": "Salle 51",
-     "site": "WAN",
-     "kind": "cours",
-     "note": ""
     }
    ],
    "Groupe B": [
