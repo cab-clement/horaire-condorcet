@@ -602,11 +602,11 @@
     "start": "13:30",
     "end": "15:30",
     "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
+    "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
+    "note": "",
     "groupe": "Groupe B"
    },
    {
@@ -614,11 +614,11 @@
     "start": "15:40",
     "end": "17:40",
     "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
+    "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
+    "note": "",
     "groupe": "Groupe B"
    },
    {
@@ -734,11 +734,11 @@
     "start": "08:20",
     "end": "10:20",
     "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
+    "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
+    "note": "",
     "groupe": "Groupe B"
    },
    {
@@ -925,26 +925,14 @@
    },
    {
     "date": "2026-11-27",
-    "start": "08:20",
-    "end": "10:20",
-    "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
-    "room": "",
-    "site": "",
-    "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
-    "groupe": "Groupe B"
-   },
-   {
-    "date": "2026-11-27",
     "start": "10:30",
     "end": "12:30",
     "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
+    "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
+    "note": "",
     "groupe": "Groupe B"
    },
    {
@@ -1131,31 +1119,19 @@
    },
    {
     "date": "2026-12-04",
-    "start": "08:20",
-    "end": "10:20",
-    "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
-    "room": "",
-    "site": "",
-    "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
-    "groupe": "Groupe B"
-   },
-   {
-    "date": "2026-12-04",
     "start": "10:30",
     "end": "12:30",
     "course": "Mathématiques appliquées B1.1",
-    "teacher": "",
+    "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "Mr Colantonio Lorenzo",
+    "note": "",
     "groupe": "Groupe B"
    }
   ]
  },
- "updated": "2026-11-05T07:15+01:00",
+ "updated": "2026-11-05T18:28+01:00",
  "full": {
   "2026-10-19": {
    "commun": [
@@ -2055,22 +2031,22 @@
      "start": "13:30",
      "end": "15:30",
      "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
+     "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
+     "note": ""
     },
     {
      "date": "2026-11-16",
      "start": "15:40",
      "end": "17:40",
      "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
+     "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
+     "note": ""
     },
     {
      "date": "2026-11-18",
@@ -2121,11 +2097,11 @@
      "start": "08:20",
      "end": "10:20",
      "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
+     "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
+     "note": ""
     }
    ]
   },
@@ -2379,25 +2355,14 @@
     },
     {
      "date": "2026-11-27",
-     "start": "08:20",
-     "end": "10:20",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
-     "room": "",
-     "site": "",
-     "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
-    },
-    {
-     "date": "2026-11-27",
      "start": "10:30",
      "end": "12:30",
      "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
+     "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
+     "note": ""
     }
    ]
   },
@@ -2640,25 +2605,14 @@
     },
     {
      "date": "2026-12-04",
-     "start": "08:20",
-     "end": "10:20",
-     "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
-     "room": "",
-     "site": "",
-     "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
-    },
-    {
-     "date": "2026-12-04",
      "start": "10:30",
      "end": "12:30",
      "course": "Mathématiques appliquées B1.1",
-     "teacher": "",
+     "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": "Mr Colantonio Lorenzo"
+     "note": ""
     }
    ]
   }
