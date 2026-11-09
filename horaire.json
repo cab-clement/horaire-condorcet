@@ -1129,9 +1129,179 @@
     "note": "",
     "groupe": "Groupe B"
    }
+  ],
+  "2026-12-07": [
+   {
+    "date": "2026-12-07",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Sciences des matériaux et applications B1.1",
+    "teacher": "DEHON Roland",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-12-07",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Sciences des matériaux et applications B1.1",
+    "teacher": "DEHON Roland",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-07",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Sciences des matériaux et applications B1.1",
+    "teacher": "DEHON Roland",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-08",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Électricité B1.1",
+    "teacher": "NDUNGIDI KIAZAYILA Papy",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-12-08",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Connaissance des matériaux aéronautiques",
+    "teacher": "PAREDES OREJUDO Manuel",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-12-08",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Introduction aux matériaux composites",
+    "teacher": "KINARD Alain",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-12-08",
+    "start": "15:40",
+    "end": "17:40",
+    "course": "Introduction aux matériaux composites",
+    "teacher": "KINARD Alain",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-12-09",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Anglais aéronautique B1.1",
+    "teacher": "PHILIPPE Marc",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-09",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Technologie avionique",
+    "teacher": "ROLAND Jean-Luc",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-10",
+    "start": "08:20",
+    "end": "10:20",
+    "course": "Électricité B1.1",
+    "teacher": "NDUNGIDI KIAZAYILA Papy",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-10",
+    "start": "10:30",
+    "end": "12:30",
+    "course": "Électricité B1.1",
+    "teacher": "NDUNGIDI KIAZAYILA Papy",
+    "room": "Salle 43",
+    "site": "WAN",
+    "kind": "labo",
+    "note": "Labos",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-10",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Mécanique et mécanique des fluides B1.1",
+    "teacher": "FOUDA BANA Patrick",
+    "room": "Salle 51",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": "Groupe B"
+   },
+   {
+    "date": "2026-12-11",
+    "start": "13:30",
+    "end": "15:30",
+    "course": "Bases de systèmes logiques",
+    "teacher": "DRUGMAND Nicolas",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   },
+   {
+    "date": "2026-12-11",
+    "start": "15:40",
+    "end": "16:40",
+    "course": "Bases de systèmes logiques",
+    "teacher": "DRUGMAND Nicolas",
+    "room": "Auditoire B",
+    "site": "WAN",
+    "kind": "cours",
+    "note": "",
+    "groupe": ""
+   }
   ]
  },
- "updated": "2026-11-08T17:53+01:00",
+ "updated": "2026-11-09T07:22+01:00",
  "full": {
   "2026-10-19": {
    "commun": [
@@ -2609,6 +2779,234 @@
      "end": "12:30",
      "course": "Mathématiques appliquées B1.1",
      "teacher": "COLANTONIO Lorenzo",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    }
+   ]
+  },
+  "2026-12-07": {
+   "commun": [
+    {
+     "date": "2026-12-07",
+     "start": "10:30",
+     "end": "12:30",
+     "course": "Sciences des matériaux et applications B1.1",
+     "teacher": "DEHON Roland",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-08",
+     "start": "08:20",
+     "end": "10:20",
+     "course": "Électricité B1.1",
+     "teacher": "NDUNGIDI KIAZAYILA Papy",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-08",
+     "start": "10:30",
+     "end": "12:30",
+     "course": "Connaissance des matériaux aéronautiques",
+     "teacher": "PAREDES OREJUDO Manuel",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-08",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Introduction aux matériaux composites",
+     "teacher": "KINARD Alain",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-08",
+     "start": "15:40",
+     "end": "17:40",
+     "course": "Introduction aux matériaux composites",
+     "teacher": "KINARD Alain",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-11",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Bases de systèmes logiques",
+     "teacher": "DRUGMAND Nicolas",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-11",
+     "start": "15:40",
+     "end": "16:40",
+     "course": "Bases de systèmes logiques",
+     "teacher": "DRUGMAND Nicolas",
+     "room": "Auditoire B",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    }
+   ],
+   "Groupe A": [
+    {
+     "date": "2026-12-07",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Électricité B1.1",
+     "teacher": "NDUNGIDI KIAZAYILA Papy",
+     "room": "Salle 43",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-07",
+     "start": "15:40",
+     "end": "17:40",
+     "course": "Électricité B1.1",
+     "teacher": "NDUNGIDI KIAZAYILA Papy",
+     "room": "Salle 43",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-09",
+     "start": "10:30",
+     "end": "12:30",
+     "course": "Technologie avionique",
+     "teacher": "ROLAND Jean-Luc",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-09",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Anglais aéronautique B1.1",
+     "teacher": "PHILIPPE Marc",
+     "room": "Salle 43",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-10",
+     "start": "09:20",
+     "end": "10:20",
+     "course": "Mathématiques appliquées B1.1",
+     "teacher": "LENOIR Guillaume",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-10",
+     "start": "10:30",
+     "end": "12:30",
+     "course": "Mathématiques appliquées B1.1",
+     "teacher": "LENOIR Guillaume",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    }
+   ],
+   "Groupe B": [
+    {
+     "date": "2026-12-07",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Sciences des matériaux et applications B1.1",
+     "teacher": "DEHON Roland",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-07",
+     "start": "15:40",
+     "end": "17:40",
+     "course": "Sciences des matériaux et applications B1.1",
+     "teacher": "DEHON Roland",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-09",
+     "start": "10:30",
+     "end": "12:30",
+     "course": "Anglais aéronautique B1.1",
+     "teacher": "PHILIPPE Marc",
+     "room": "Salle 43",
+     "site": "WAN",
+     "kind": "cours",
+     "note": ""
+    },
+    {
+     "date": "2026-12-09",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Technologie avionique",
+     "teacher": "ROLAND Jean-Luc",
+     "room": "Salle 51",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-10",
+     "start": "08:20",
+     "end": "10:20",
+     "course": "Électricité B1.1",
+     "teacher": "NDUNGIDI KIAZAYILA Papy",
+     "room": "Salle 43",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-10",
+     "start": "10:30",
+     "end": "12:30",
+     "course": "Électricité B1.1",
+     "teacher": "NDUNGIDI KIAZAYILA Papy",
+     "room": "Salle 43",
+     "site": "WAN",
+     "kind": "labo",
+     "note": "Labos"
+    },
+    {
+     "date": "2026-12-10",
+     "start": "13:30",
+     "end": "15:30",
+     "course": "Mécanique et mécanique des fluides B1.1",
+     "teacher": "FOUDA BANA Patrick",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
