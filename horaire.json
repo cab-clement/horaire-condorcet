@@ -601,24 +601,24 @@
     "date": "2026-11-16",
     "start": "13:30",
     "end": "15:30",
-    "course": "Mathématiques appliquées B1.1",
+    "course": "Annulation",
     "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "",
+    "note": "Mathématiques appliquées B1.1",
     "groupe": "Groupe B"
    },
    {
     "date": "2026-11-16",
     "start": "15:40",
     "end": "17:40",
-    "course": "Mathématiques appliquées B1.1",
+    "course": "Annulation",
     "teacher": "COLANTONIO Lorenzo",
     "room": "Salle 51",
     "site": "WAN",
     "kind": "cours",
-    "note": "",
+    "note": "Mathématiques appliquées B1.1",
     "groupe": "Groupe B"
    },
    {
@@ -1325,7 +1325,7 @@
    }
   ]
  },
- "updated": "2026-11-11T18:12+01:00",
+ "updated": "2026-11-12T14:49+01:00",
  "full": {
   "2026-10-19": {
    "commun": [
@@ -2224,23 +2224,23 @@
      "date": "2026-11-16",
      "start": "13:30",
      "end": "15:30",
-     "course": "Mathématiques appliquées B1.1",
+     "course": "Annulation",
      "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": ""
+     "note": "Mathématiques appliquées B1.1"
     },
     {
      "date": "2026-11-16",
      "start": "15:40",
      "end": "17:40",
-     "course": "Mathématiques appliquées B1.1",
+     "course": "Annulation",
      "teacher": "COLANTONIO Lorenzo",
      "room": "Salle 51",
      "site": "WAN",
      "kind": "cours",
-     "note": ""
+     "note": "Mathématiques appliquées B1.1"
     },
     {
      "date": "2026-11-18",
